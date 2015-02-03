@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ac_color">#FF8822</color>
+    <drawable name="ab_bg">@color/ac_color</drawable>
+</resources>
