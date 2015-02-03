@@ -44,11 +44,8 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
             onBindMainViewHolder((VH) holder, position - 1);
         else
         {
-            if (customRelativeWrapper == null)
-            {
-                onBindHeaderViewHolder((HeaderHolder) holder);
-                customRelativeWrapper = (CustomRelativeWrapper) holder.itemView;
-            }
+            onBindHeaderViewHolder((HeaderHolder) holder);
+            customRelativeWrapper = (CustomRelativeWrapper) holder.itemView;
         }
     }
 
