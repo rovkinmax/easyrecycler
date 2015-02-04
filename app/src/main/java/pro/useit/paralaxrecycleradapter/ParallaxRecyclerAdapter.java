@@ -82,7 +82,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
         }
         customRelativeWrapper.setClipY(Math.round(offsetCalculated));
         notifyDataSetChanged();
-        if (parallaxListener != null)
+        if (parallaxListener != null && enableHeader)
         {
             float left = Math.min(1, ((offsetCalculated) / (customRelativeWrapper.getHeight() * SCROLL_SPEED)));
             parallaxListener.onParallaxScroll(left, offset);
@@ -111,7 +111,8 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
     public void setParallaxListener(final OnParallaxEventListener parallaxListener)
     {
         this.parallaxListener = parallaxListener;
-        parallaxListener.onParallaxScroll(0, 0);
+        if (enableHeader)
+            parallaxListener.onParallaxScroll(0, 0);
     }
 
     @Override
