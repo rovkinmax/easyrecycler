@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
 /**
  * Created UseIT for  AdMe
@@ -153,7 +153,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
         }
     }
 
-    private static class CustomRelativeWrapper extends RelativeLayout
+    private static class CustomRelativeWrapper extends FrameLayout
     {
 
         private int offset;
