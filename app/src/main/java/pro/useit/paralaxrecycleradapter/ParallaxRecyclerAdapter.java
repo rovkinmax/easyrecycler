@@ -23,6 +23,8 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
     private CustomRelativeWrapper customRelativeWrapper;
     private OnParallaxEventListener parallaxListener;
     private int totalScroll = 0;
+    private boolean enableHeader = true;
+    private int sizeDiff = 1;
 
     protected ParallaxRecyclerAdapter(final RecyclerView recyclerView)
     {
@@ -40,13 +42,14 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
     @Override
     public final void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position)
     {
-        if (holder.getItemViewType() != TYPE_VIEW_HOLDER && position > 0)
-            onBindMainViewHolder((VH) holder, position - 1);
-        else
+        if (holder.getItemViewType() == TYPE_VIEW_HOLDER)
         {
             onBindHeaderViewHolder((HeaderHolder) holder);
             customRelativeWrapper = (CustomRelativeWrapper) holder.itemView;
+            return;
         }
+
+        onBindMainViewHolder((VH) holder, position - sizeDiff);
     }
 
 
@@ -93,16 +96,16 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
 
     public final void notifyMainItemChanged(final int position)
     {
-        notifyItemChanged(position + 1);
+        notifyItemChanged(position + sizeDiff);
     }
 
     @Override
     public final int getItemViewType(final int position)
     {
-        if (position == 0)
+        if (position == 0 && enableHeader)
             return TYPE_VIEW_HOLDER;
 
-        return getMainItemType(position - 1);
+        return getMainItemType(position - sizeDiff);
     }
 
     public void setParallaxListener(final OnParallaxEventListener parallaxListener)
@@ -114,7 +117,13 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
     @Override
     public final int getItemCount()
     {
-        return getMainItemCount() + 1;
+        return getMainItemCount() + sizeDiff;
+    }
+
+    public void setEnableHeader(final boolean enableHeader)
+    {
+        this.enableHeader = enableHeader;
+        sizeDiff = enableHeader ? 1 : 0;
     }
 
     protected static class HeaderHolder extends RecyclerView.ViewHolder
