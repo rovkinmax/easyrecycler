@@ -125,6 +125,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
     {
         this.enableHeader = enableHeader;
         sizeDiff = enableHeader ? 1 : 0;
+        notifyDataSetChanged();
     }
 
     protected static class HeaderHolder extends RecyclerView.ViewHolder
