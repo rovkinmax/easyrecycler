@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
  */
 public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter
 {
+
     private static final float SCROLL_SPEED = 0.5f;
     public static final int TYPE_VIEW_HOLDER = Integer.MAX_VALUE;
     private CustomRelativeWrapper customRelativeWrapper;
@@ -165,26 +166,29 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
             if (dy > 70)
             {
                 scrollDown = true;
-                return;
             }
-
-            if (dy < -50)
-                scrollDown = false;
+            else
+                if (dy < -20)
+                    scrollDown = false;
         }
 
         private void changeAbState()
         {
             if (parallaxListener != null && totalScroll > 0)
             {
-                if (showAb() && !abWasShow)
+                if (showAb())
                 {
+                    if (abWasShow)
+                        return;
+
                     parallaxListener.onShowActionBar();
                     abWasShow = true;
-                    return;
                 }
-
-                if (abWasShow)
+                else
                 {
+                    if (!abWasShow)
+                        return;
+
                     parallaxListener.onHideActionBar();
                     abWasShow = false;
                 }
@@ -235,5 +239,6 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
         public void onShowActionBar();
 
     }
+
 
 }
