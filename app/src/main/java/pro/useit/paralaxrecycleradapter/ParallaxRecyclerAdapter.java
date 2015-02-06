@@ -163,7 +163,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
 
         private void detectScrollDown(final int dy)
         {
-            if (dy > 70)
+            if (dy > 20)
             {
                 scrollDown = true;
             }
