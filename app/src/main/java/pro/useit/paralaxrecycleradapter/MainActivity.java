@@ -12,6 +12,9 @@ public class MainActivity extends ActionBarActivity implements ParallaxRecyclerA
 {
 
     private Toolbar toolbar;
+    private ExampleAdapter adapter;
+    private boolean abShowed = true;
+    private int top = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -21,19 +24,43 @@ public class MainActivity extends ActionBarActivity implements ParallaxRecyclerA
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        ExampleAdapter adapter = new ExampleAdapter(this, recyclerView);
+        adapter = new ExampleAdapter(this, recyclerView);
         adapter.setParallaxListener(this);
         recyclerView.setAdapter(adapter);
-
+        onParallaxScroll(0, 0);
     }
 
     @Override
     public void onParallaxScroll(final float percentage, final float offset)
     {
         toolbar.getBackground().setAlpha((int) (255 * percentage));
+    }
+
+    @Override
+    public void onHideActionBar()
+    {
+        toolbar
+                .animate()
+                .setDuration(200)
+                .translationY(-toolbar.getBottom());
+    }
+
+    @Override
+    public void onShowActionBar()
+    {
+        toolbar
+                .animate()
+                .setDuration(200)
+                .translationY(0);
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
     }
 }

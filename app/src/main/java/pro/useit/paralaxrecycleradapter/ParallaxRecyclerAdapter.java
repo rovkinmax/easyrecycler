@@ -144,16 +144,59 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
 
     private class ScrollListener extends RecyclerView.OnScrollListener
     {
+        private boolean scrollDown = false;
+        private boolean abWasShow = true;
+
+
         @Override
         public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
         {
+            detectScrollDown(dy);
+            changeAbState();
             if (customRelativeWrapper != null)
             {
                 totalScroll += dy;
                 translateHeader(totalScroll);
             }
         }
+
+        private void detectScrollDown(final int dy)
+        {
+            if (dy > 70)
+            {
+                scrollDown = true;
+                return;
+            }
+
+            if (dy < -50)
+                scrollDown = false;
+        }
+
+        private void changeAbState()
+        {
+            if (parallaxListener != null && totalScroll > 0)
+            {
+                if (showAb() && !abWasShow)
+                {
+                    parallaxListener.onShowActionBar();
+                    abWasShow = true;
+                    return;
+                }
+
+                if (abWasShow)
+                {
+                    parallaxListener.onHideActionBar();
+                    abWasShow = false;
+                }
+            }
+        }
+
+        private boolean showAb()
+        {
+            return totalScroll <= customRelativeWrapper.getHeight() || !scrollDown;
+        }
     }
+
 
     private static class CustomRelativeWrapper extends FrameLayout
     {
@@ -186,6 +229,11 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
          * @param offset
          */
         public void onParallaxScroll(float percentage, final float offset);
+
+        public void onHideActionBar();
+
+        public void onShowActionBar();
+
     }
 
 }
