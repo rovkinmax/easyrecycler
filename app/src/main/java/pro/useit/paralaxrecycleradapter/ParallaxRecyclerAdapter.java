@@ -148,6 +148,12 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
         private boolean scrollDown = false;
         private boolean abWasShow = true;
 
+        @Override
+        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState)
+        {
+            super.onScrollStateChanged(recyclerView, newState);
+            changeAbState();
+        }
 
         @Override
         public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
@@ -159,6 +165,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
                 totalScroll += dy;
                 translateHeader(totalScroll);
             }
+            changeVisibilityHeader();
         }
 
         private void detectScrollDown(final int dy)
@@ -197,8 +204,22 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
 
         private boolean showAb()
         {
-            return totalScroll <= customRelativeWrapper.getHeight() || !scrollDown;
+            return !headerOutOfVisibleRange() || !scrollDown;
         }
+
+        private void changeVisibilityHeader()
+        {
+            if (customRelativeWrapper != null)
+            {
+                customRelativeWrapper.setVisibility(headerOutOfVisibleRange() ? View.INVISIBLE : View.VISIBLE);
+            }
+        }
+
+        private boolean headerOutOfVisibleRange()
+        {
+            return totalScroll > customRelativeWrapper.getHeight();
+        }
+
     }
 
 
