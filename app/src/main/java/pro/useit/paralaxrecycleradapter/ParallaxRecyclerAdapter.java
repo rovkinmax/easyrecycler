@@ -160,9 +160,9 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
         {
             detectScrollDown(dy);
             changeAbState();
-            if (customRelativeWrapper != null)
+            totalScroll += dy;
+            if (customRelativeWrapper != null && !headerOutOfVisibleRange())
             {
-                totalScroll += dy;
                 translateHeader(totalScroll);
             }
             changeVisibilityHeader();
