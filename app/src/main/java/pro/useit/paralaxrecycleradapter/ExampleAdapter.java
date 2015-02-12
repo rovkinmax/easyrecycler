@@ -56,7 +56,7 @@ public class ExampleAdapter extends ParallaxRecyclerAdapter<ExampleAdapter.ViewH
     @Override
     protected void onBindMainViewHolder(final ViewHolder holder, final int position)
     {
-        holder.textView.setText("item The integral is an important concept in mathematics. Integration is one of the two main operations in calculus, with its inverse, differentiation, being the other. Given a function f of a real variable x and an interval [a, b] of the real line, the definite integral" + (position + 1));
+        holder.textView.setText("item " + (position + 1));
     }
 
     @Override
