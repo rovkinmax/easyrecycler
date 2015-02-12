@@ -1,4 +1,4 @@
-package pro.useit.paralaxrecycleradapter;
+package pro.useit.paralaxheader;
 
 import android.content.Context;
 import android.graphics.Canvas;

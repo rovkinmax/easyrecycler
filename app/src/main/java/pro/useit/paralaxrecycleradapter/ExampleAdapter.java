@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import pro.useit.paralaxheader.ParallaxRecyclerAdapter;
 
 /**
  * Created UseIT for  ParalaxRecyclerAdapter

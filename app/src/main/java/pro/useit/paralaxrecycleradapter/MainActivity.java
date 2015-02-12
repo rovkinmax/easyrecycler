@@ -6,6 +6,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import pro.useit.paralaxheader.ParallaxRecyclerAdapter;
 
 
 public class MainActivity extends ActionBarActivity implements ParallaxRecyclerAdapter.OnParallaxEventListener
