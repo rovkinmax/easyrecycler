@@ -217,9 +217,16 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
 
         private boolean headerOutOfVisibleRange()
         {
-            return totalScroll > customRelativeWrapper.getHeight();
+            return totalScroll > getHeaderHeight();
         }
 
+    }
+
+    private int getHeaderHeight()
+    {
+        if (customRelativeWrapper == null)
+            return 0;
+        return customRelativeWrapper.getHeight();
     }
 
 
