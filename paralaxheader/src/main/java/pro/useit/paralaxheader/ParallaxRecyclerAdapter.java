@@ -20,22 +20,24 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
 {
 
     private static final float SCROLL_SPEED = 0.5f;
-    public static final int TYPE_VIEW_HOLDER = Integer.MAX_VALUE;
+    public static final int TYPE_VIEW_HEADER = Integer.MAX_VALUE;
     private CustomRelativeWrapper customRelativeWrapper;
     private OnParallaxEventListener parallaxListener;
     private int totalScroll = 0;
     private boolean enableHeader = true;
     private int sizeDiff = 1;
+    private Context context;
 
     protected ParallaxRecyclerAdapter(final RecyclerView recyclerView)
     {
         recyclerView.setOnScrollListener(new ScrollListener());
+        this.context = recyclerView.getContext().getApplicationContext();
     }
 
     @Override
     public final RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType)
     {
-        if (viewType == TYPE_VIEW_HOLDER)
+        if (viewType == TYPE_VIEW_HEADER)
             return onCreateHeaderViewHolder(parent);
         return onCreateMainViewHolder(parent, viewType);
     }
@@ -43,7 +45,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
     @Override
     public final void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position)
     {
-        if (holder.getItemViewType() == TYPE_VIEW_HOLDER)
+        if (holder.getItemViewType() == TYPE_VIEW_HEADER)
         {
             onBindHeaderViewHolder((HeaderHolder) holder);
             customRelativeWrapper = (CustomRelativeWrapper) holder.itemView;
@@ -53,6 +55,10 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
         onBindMainViewHolder((VH) holder, position - sizeDiff);
     }
 
+    Context getContext()
+    {
+        return context;
+    }
 
     protected abstract int getMainItemCount();
 
@@ -104,7 +110,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
     public final int getItemViewType(final int position)
     {
         if (position == 0 && enableHeader)
-            return TYPE_VIEW_HOLDER;
+            return TYPE_VIEW_HEADER;
 
         return getMainItemType(position - sizeDiff);
     }
@@ -229,6 +235,10 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
         return customRelativeWrapper.getHeight();
     }
 
+    public boolean isEnableHeader()
+    {
+        return enableHeader;
+    }
 
     private static class CustomRelativeWrapper extends FrameLayout
     {
