@@ -7,6 +7,7 @@ provide fading action bar with recyclerview
 ```groovy
 dependencies {
    compile 'pro.useit.recyclerview:easyrecycler:1.0.5'
+   compile 'com.android.support:cardview-v7:21.0.3'//cause requered RecyclerView and Layout Managers
 }
 ````
 
