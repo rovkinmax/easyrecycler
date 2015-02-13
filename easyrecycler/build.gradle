@@ -4,8 +4,8 @@ apply plugin: 'signing'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
-def siteUrl = "https://github.com/rovkinmax/ParalaxRecyclerAdapter"
-def gitUrl = 'https://github.com/rovkinmax/ParalaxRecyclerAdapter.git'
+def siteUrl = "https://github.com/rovkinmax/easyrecycler"
+def gitUrl = 'https://github.com/rovkinmax/easyrecycler.git'
 def vCode = 5
 def vName = '1.0'
 version = vName + '.' + vCode
