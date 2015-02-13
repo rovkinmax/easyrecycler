@@ -1,1 +1,1 @@
-include ':app', ':paralaxheader'
+include ':app', ':easyrecycler'
