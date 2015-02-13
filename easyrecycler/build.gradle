@@ -6,8 +6,9 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 def siteUrl = "https://github.com/rovkinmax/ParalaxRecyclerAdapter"
 def gitUrl = 'https://github.com/rovkinmax/ParalaxRecyclerAdapter.git'
-def vCode = 3
+def vCode = 4
 def vName = '1.0'
+version = vName + '.' + vCode
 group = "pro.useit.recyclerview"
 android {
     compileSdkVersion 21
