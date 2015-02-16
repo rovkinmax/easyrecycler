@@ -21,7 +21,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
 
     private static final float SCROLL_SPEED = 0.5f;
     public static final int TYPE_VIEW_HEADER = Integer.MAX_VALUE;
-    private CustomRelativeWrapper customRelativeWrapper;
+    private CustomWrapper customWrapper;
     private OnParallaxEventListener parallaxListener;
     private int totalScroll = 0;
     private boolean enableHeader = true;
@@ -48,7 +48,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
         if (holder.getItemViewType() == TYPE_VIEW_HEADER)
         {
             onBindHeaderViewHolder((HeaderHolder) holder);
-            customRelativeWrapper = (CustomRelativeWrapper) holder.itemView;
+            customWrapper = (CustomWrapper) holder.itemView;
             return;
         }
 
@@ -73,27 +73,40 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
     protected abstract <HH extends HeaderHolder> void onBindHeaderViewHolder(final HH holder);
 
 
-    private void translateHeader(float offset)
+    private void doParallaxWithHeader(float offset)
     {
-        float offsetCalculated = offset * SCROLL_SPEED;
+        float parallaxOffset = offset * SCROLL_SPEED;
+        moveHeaderToOffset(parallaxOffset);
+
+        if (parallaxListener != null && enableHeader)
+        {
+            float left = Math.min(1, ((parallaxOffset) / (customWrapper.getHeight() * SCROLL_SPEED)));
+            parallaxListener.onParallaxScroll(left);
+        }
+
+        customWrapper.setYOffset(Math.round(parallaxOffset));
+        notifyHeaderChanged();
+    }
+
+    private void moveHeaderToOffset(final float parallaxOffset)
+    {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
         {
-            customRelativeWrapper.setTranslationY(offsetCalculated);
+            customWrapper.setTranslationY(parallaxOffset);
         }
         else
         {
-            TranslateAnimation anim = new TranslateAnimation(0, 0, offsetCalculated, offsetCalculated);
-            anim.setFillAfter(true);
-            anim.setDuration(0);
-            customRelativeWrapper.startAnimation(anim);
+            TranslateAnimation anim = createTranslateAnimation(parallaxOffset);
+            customWrapper.startAnimation(anim);
         }
-        customRelativeWrapper.setClipY(Math.round(offsetCalculated));
-        notifyDataSetChanged();
-        if (parallaxListener != null && enableHeader)
-        {
-            float left = Math.min(1, ((offsetCalculated) / (customRelativeWrapper.getHeight() * SCROLL_SPEED)));
-            parallaxListener.onParallaxScroll(left, offset);
-        }
+    }
+
+    private TranslateAnimation createTranslateAnimation(final float parallaxOffset)
+    {
+        TranslateAnimation anim = new TranslateAnimation(0, 0, parallaxOffset, parallaxOffset);
+        anim.setFillAfter(true);
+        anim.setDuration(0);
+        return anim;
     }
 
     public final void notifyHeaderChanged()
@@ -119,7 +132,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
     {
         this.parallaxListener = parallaxListener;
         if (enableHeader)
-            parallaxListener.onParallaxScroll(0, 0);
+            parallaxListener.onParallaxScroll(0);
     }
 
     @Override
@@ -140,11 +153,11 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
 
         public HeaderHolder(final View itemView)
         {
-            super(new CustomRelativeWrapper(itemView.getContext()));
+            super(new CustomWrapper(itemView.getContext()));
             final ViewGroup parent = (ViewGroup) itemView.getParent();
             if (parent != null)
                 parent.removeView(itemView);
-            ((CustomRelativeWrapper) this.itemView).addView(itemView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            ((CustomWrapper) this.itemView).addView(itemView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             this.itemView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
     }
@@ -167,9 +180,9 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
             detectScrollDown(dy);
             changeAbState();
             totalScroll += dy;
-            if (customRelativeWrapper != null && !headerOutOfVisibleRange())
+            if (customWrapper != null && !headerOutOfVisibleRange())
             {
-                translateHeader(totalScroll);
+                doParallaxWithHeader(totalScroll);
             }
             changeVisibilityHeader();
         }
@@ -215,9 +228,9 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
 
         private void changeVisibilityHeader()
         {
-            if (customRelativeWrapper != null)
+            if (customWrapper != null)
             {
-                customRelativeWrapper.setVisibility(headerOutOfVisibleRange() ? View.INVISIBLE : View.VISIBLE);
+                customWrapper.setVisibility(headerOutOfVisibleRange() ? View.INVISIBLE : View.VISIBLE);
             }
         }
 
@@ -230,9 +243,9 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
 
     private int getHeaderHeight()
     {
-        if (customRelativeWrapper == null)
+        if (customWrapper == null)
             return 0;
-        return customRelativeWrapper.getHeight();
+        return customWrapper.getHeight();
     }
 
     public boolean isEnableHeader()
@@ -240,12 +253,12 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
         return enableHeader;
     }
 
-    private static class CustomRelativeWrapper extends FrameLayout
+    private static class CustomWrapper extends FrameLayout
     {
 
         private int offset;
 
-        public CustomRelativeWrapper(Context context)
+        public CustomWrapper(Context context)
         {
             super(context);
         }
@@ -257,7 +270,7 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
             super.dispatchDraw(canvas);
         }
 
-        public void setClipY(int offset)
+        public void setYOffset(int offset)
         {
             this.offset = offset;
             invalidate();
@@ -268,9 +281,8 @@ public abstract class ParallaxRecyclerAdapter<VH extends RecyclerView.ViewHolder
     {
         /**
          * @param percentage value [0,1]
-         * @param offset
          */
-        public void onParallaxScroll(float percentage, final float offset);
+        public void onParallaxScroll(float percentage);
 
         public void onHideActionBar();
 
