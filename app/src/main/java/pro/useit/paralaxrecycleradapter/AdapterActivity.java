@@ -36,7 +36,7 @@ public class AdapterActivity extends ActionBarActivity implements ParallaxRecycl
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(adapter);
-        onParallaxScroll(0, 0);
+        onParallaxScroll(0);
     }
 
     private RecyclerView.LayoutManager getLayoutManager()
@@ -49,7 +49,7 @@ public class AdapterActivity extends ActionBarActivity implements ParallaxRecycl
     }
 
     @Override
-    public void onParallaxScroll(final float percentage, final float offset)
+    public void onParallaxScroll(final float percentage)
     {
         toolbar.getBackground().setAlpha((int) (255 * percentage));
     }
