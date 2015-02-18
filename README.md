@@ -8,7 +8,7 @@
 * provide fading action bar with recyclerview
 * parallax header
 * similar spacing between elements
-* 
+
 ##### Gradle
 ```groovy
 dependencies {
