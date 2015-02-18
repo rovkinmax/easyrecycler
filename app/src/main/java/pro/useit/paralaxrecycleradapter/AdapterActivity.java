@@ -40,7 +40,7 @@ public class AdapterActivity extends ActionBarActivity implements ParallaxRecycl
 
     private RecyclerView.LayoutManager getLayoutManager()
     {
-        int spanCount = 3;
+        int spanCount = 2;
         final SpacesItemDecoration itemDecoration = new SpacesItemDecoration(10, spanCount);
         itemDecoration.setIgnoreFirst(adapter.isEnableHeader());
         recyclerView.addItemDecoration(itemDecoration);

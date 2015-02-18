@@ -15,7 +15,6 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration
     private int space;
     private int spanCount = 1;
     private boolean ignoreFirst = false;
-    private int diffSize = 1;
 
     public SpacesItemDecoration(int space)
     {
@@ -35,19 +34,18 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration
         if (ignoreFirst && targetPosition == 0)
             return;
 
+        int positionInColumn = getPositionInColumn(targetPosition);
 
-        int positionInColumn = getPositionInColumn(targetPosition + diffSize);
         outRect.left = getLeftSpace(positionInColumn);
         outRect.right = getRightSpace(positionInColumn);
-
-        //outRect.bottom = space;
         outRect.top = space;
+
+        //Log.d("SpacesItemDecoration", String.format("targetPosition = %d  positionInColumn = %d, left = %d  right = %d", targetPosition, positionInColumn, outRect.left, outRect.right));
     }
 
     public void setIgnoreFirst(final boolean ignoreFirst)
     {
         this.ignoreFirst = ignoreFirst;
-        diffSize = ignoreFirst ? 2 : 1;
     }
 
     private int getPositionInColumn(int targetPosition)
