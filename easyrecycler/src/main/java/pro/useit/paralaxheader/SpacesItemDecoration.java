@@ -2,6 +2,7 @@ package pro.useit.paralaxheader;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -15,6 +16,7 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration
     private int space;
     private int spanCount = 1;
     private boolean ignoreFirst = false;
+    private int positionDifference = 1;
 
     public SpacesItemDecoration(int space)
     {
@@ -34,18 +36,19 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration
         if (ignoreFirst && targetPosition == 0)
             return;
 
-        int positionInColumn = getPositionInColumn(targetPosition);
+        int positionInColumn = getPositionInColumn(targetPosition + positionDifference);
 
         outRect.left = getLeftSpace(positionInColumn);
         outRect.right = getRightSpace(positionInColumn);
         outRect.top = space;
 
-        //Log.d("SpacesItemDecoration", String.format("targetPosition = %d  positionInColumn = %d, left = %d  right = %d", targetPosition, positionInColumn, outRect.left, outRect.right));
+        Log.d("SpacesItemDecoration", String.format("targetPosition = %d  positionInColumn = %d, left = %d  right = %d", targetPosition, positionInColumn, outRect.left, outRect.right));
     }
 
     public void setIgnoreFirst(final boolean ignoreFirst)
     {
         this.ignoreFirst = ignoreFirst;
+        positionDifference = ignoreFirst ? 0 : 1;
     }
 
     private int getPositionInColumn(int targetPosition)

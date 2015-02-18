@@ -29,6 +29,7 @@ public class AdapterActivity extends ActionBarActivity implements ParallaxRecycl
 
         adapter = new ExampleAdapter(this, recyclerView);
         adapter.setParallaxListener(this);
+        adapter.setEnableHeader(true);
 
         final RecyclerView.LayoutManager layoutManager = getLayoutManager();
         recyclerView.setLayoutManager(layoutManager);
