@@ -6,7 +6,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 def siteUrl = "https://github.com/rovkinmax/easyrecycler"
 def gitUrl = 'https://github.com/rovkinmax/easyrecycler.git'
-def vCode = 6
+def vCode = 8
 def vName = '1.0'
 version = vName + '.' + vCode
 group = "pro.useit.recyclerview"
