@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import pro.useit.paralaxheader.HeaderGridLayoutManager;
 import pro.useit.paralaxheader.ParallaxRecyclerAdapter;
@@ -45,7 +44,7 @@ public class AdapterActivity extends ActionBarActivity implements ParallaxRecycl
         final SpacesItemDecoration itemDecoration = new SpacesItemDecoration(10, spanCount);
         itemDecoration.setIgnoreFirst(adapter.isEnableHeader());
         recyclerView.addItemDecoration(itemDecoration);
-        return new HeaderGridLayoutManager(adapter, spanCount, StaggeredGridLayoutManager.VERTICAL, false);
+        return new HeaderGridLayoutManager(adapter, spanCount, HeaderGridLayoutManager.VERTICAL, false);
     }
 
     @Override
