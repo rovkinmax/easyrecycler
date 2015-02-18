@@ -1,8 +1,14 @@
 # easyrecycler
-provide fading action bar with recyclerview
-
+       
+       
 ![alt text](https://api.monosnap.com/rpc/file/download?id=8ghh7zA5Nzuj0lGwkoEvEcI3pOZ9o8)
-
+        
+        
+ 
+* provide fading action bar with recyclerview
+* parallax header
+* similar spacing between elements
+* 
 ##### Gradle
 ```groovy
 dependencies {
