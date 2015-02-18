@@ -19,7 +19,7 @@ dependencies {
 similar spacing between the elements even in the grid
 ```java
 int spanCount = 3;
-int deviderWidth = 10;
+int dividerWidth = 10;
 final SpacesItemDecoration itemDecoration = new SpacesItemDecoration(deviderWidth, spanCount);
 itemDecoration.setIgnoreFirst(adapter.isEnableHeader());
 recyclerView.addItemDecoration(itemDecoration);
