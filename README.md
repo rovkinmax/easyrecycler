@@ -12,7 +12,7 @@
 ##### Gradle
 ```groovy
 dependencies {
-   compile 'pro.useit.recyclerview:easyrecycler:1.0.7'
+   compile 'pro.useit.recyclerview:easyrecycler:1.0.8'
    compile 'com.android.support:cardview-v7:21.0.3'//cause requered RecyclerView and Layout Managers
 }
 ````
