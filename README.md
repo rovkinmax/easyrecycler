@@ -36,6 +36,10 @@ ParallaxRecyclerAdapter adapter = //some implements of ParallaxRecyclerAdapter
 HeaderGridLayoutManager layoutManager = new HeaderGridLayoutManager(adapter, spanCount, HeaderGridLayoutManager.VERTICAL, false);
 recyclerView.setLayoutManager(layoutManager);
 ````
+##Known issue
+* add/remove/dynamycally resize element
+* orientation changes
+
 License
 -----
 Copyright (c) 2015 Rovkin Max
