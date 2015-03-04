@@ -9,27 +9,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import pro.useit.paralaxheader.ParallaxRecyclerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created UseIT for  ParalaxRecyclerAdapter
  * User: maxrovkin
  * Date: 03.02.15
  * Time: 17:00
  */
-public class ExampleAdapter extends ParallaxRecyclerAdapter<ExampleAdapter.ViewHolder>
+public class ExampleAdapter extends ParallaxRecyclerAdapter<ExampleAdapter.ViewHolder> implements View.OnClickListener
+
 {
     private int count = 100;
+    private List<String> stringList = new ArrayList<>(count);
     private final LayoutInflater inflater;
 
     protected ExampleAdapter(Context context, final RecyclerView recyclerView)
     {
         super(recyclerView);
         inflater = LayoutInflater.from(context);
+        for (int i = 0; i < count; i++)
+            stringList.add("Item " + (i + 1));
     }
 
     @Override
     protected int getMainItemCount()
     {
-        return count;
+        return stringList.size();
     }
 
     @Override
@@ -56,13 +63,24 @@ public class ExampleAdapter extends ParallaxRecyclerAdapter<ExampleAdapter.ViewH
     @Override
     protected void onBindMainViewHolder(final ViewHolder holder, final int position)
     {
-        holder.textView.setText("item " + (position + 1));
+        holder.textView.setText(stringList.get(position));
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(this);
     }
 
     @Override
     protected <HH extends HeaderHolder> void onBindHeaderViewHolder(final HH holder)
     {
         ((ViewHeaderHolder) holder).imageView.setImageResource(R.drawable.googleplaybanner);
+    }
+
+    @Override
+    public void onClick(final View v)
+    {
+        int position = (int) v.getTag();
+        stringList.remove(position);
+        notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
     protected static class ViewHeaderHolder extends HeaderHolder

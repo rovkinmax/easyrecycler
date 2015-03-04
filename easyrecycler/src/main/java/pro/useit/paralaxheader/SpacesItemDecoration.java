@@ -17,6 +17,7 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration
     private int spanCount = 1;
     private boolean ignoreFirst = false;
     private int positionDifference = 1;
+    private boolean justTopBottomDivider = false;
 
     public SpacesItemDecoration(int space)
     {
@@ -36,13 +37,33 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration
         if (ignoreFirst && targetPosition == 0)
             return;
 
-        int positionInColumn = getPositionInColumn(targetPosition + positionDifference);
+        if (justTopBottomDivider)
+        {
+            isAddedTopBottomSpace(outRect, parent, targetPosition);
+            return;
+        }
 
+
+        int positionInColumn = getPositionInColumn(targetPosition + positionDifference);
         outRect.left = getLeftSpace(positionInColumn);
         outRect.right = getRightSpace(positionInColumn);
         outRect.top = space;
+    }
 
-        Log.d("SpacesItemDecoration", String.format("targetPosition = %d  positionInColumn = %d, left = %d  right = %d", targetPosition, positionInColumn, outRect.left, outRect.right));
+    private void isAddedTopBottomSpace(final Rect outRect, final RecyclerView parent, final int targetPosition)
+    {
+        int coluumnNumber = getColumnNumber(targetPosition + positionDifference);
+
+        if (coluumnNumber == 1)
+        {
+            outRect.top = space;
+            return;
+        }
+
+        if (coluumnNumber == getTotalColumnCount(parent))
+            outRect.bottom = space;
+
+        Log.d("SpacesItemDecoration", String.format("targetPosition = %d  columnNumber = %d, top = %d  botom = %d", targetPosition, coluumnNumber, outRect.top, outRect.bottom));
     }
 
     public void setIgnoreFirst(final boolean ignoreFirst)
@@ -58,6 +79,20 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration
             return spanCount;
 
         return mod;
+    }
+
+    private int getColumnNumber(int targetPosition)
+    {
+        int mod = targetPosition % spanCount;
+        if (mod == 0)
+            return targetPosition / spanCount;
+        return (targetPosition / spanCount) + 1;
+    }
+
+    private int getTotalColumnCount(RecyclerView recyclerView)
+    {
+        int totalCount = recyclerView.getAdapter().getItemCount();
+        return (totalCount / spanCount) - (1 - positionDifference);
     }
 
     private int getLeftSpace(int positionInColumn)
@@ -79,5 +114,10 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration
     public void setSpanCount(final int spanCount)
     {
         this.spanCount = spanCount;
+    }
+
+    public void setJustTopBottomDivider(final boolean justTopBottomDivider)
+    {
+        this.justTopBottomDivider = justTopBottomDivider;
     }
 }

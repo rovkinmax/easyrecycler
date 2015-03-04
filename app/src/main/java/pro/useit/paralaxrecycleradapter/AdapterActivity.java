@@ -41,9 +41,10 @@ public class AdapterActivity extends ActionBarActivity implements ParallaxRecycl
 
     private RecyclerView.LayoutManager getLayoutManager()
     {
-        int spanCount = 2;
+        int spanCount = 3;
         final SpacesItemDecoration itemDecoration = new SpacesItemDecoration(10, spanCount);
         itemDecoration.setIgnoreFirst(adapter.isEnableHeader());
+        itemDecoration.setJustTopBottomDivider(true);
         recyclerView.addItemDecoration(itemDecoration);
         return new HeaderGridLayoutManager(adapter, spanCount, HeaderGridLayoutManager.VERTICAL, false);
     }
